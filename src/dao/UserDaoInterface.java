@@ -2,8 +2,7 @@ package dao;
 
 import model.User;
 
-public interface UserDaoInterface{
-	
-	public void signUp(User user);
-	public boolean loginUser(User user);
+interface  UserDaoInterface {
+	int signUp(User user) ;
+	boolean  loginUser(User user);
 }

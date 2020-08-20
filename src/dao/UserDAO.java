@@ -1,65 +1,60 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-import utility.ConnectionManager;
+
 import model.User;
+import utility.ConnectionManager;
 
-public class UserDAO implements UserDaoInterface{
-
-	@Override
-	public void signUp(User user) {
-		// TODO Auto-generated method stub
-		String email = user.getEmail();
-		String password = user.getPassword();
-		String date = (user.getDate().toString());
-		
-		ConnectionManager cm = new ConnectionManager();
-		
-		String sql = "insert into USERDATA(EMAIL_USER,PASSWORD_USER,DATE_USER)VALUES(?,?,?)";
-		
+public  class UserDAO  implements UserDaoInterface{
+	public int signUp(User user)  {
+		Connection con;
 		try {
-		PreparedStatement st = cm.getConnection().prepareStatement(sql);
-		
-		st.setString(1, email);
-		st.setString(2, password);
-		st.setString(3, date);
-		
-		st.executeUpdate();
-		cm.getConnection().close();
-		
-		}catch (Exception e) {
-			System.out.println(e);
+			con = ConnectionManager.getConnection();
+			String sql="insert into USERS(email,password)values(?,?)";
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1,user.getEmail());
+			st.setString(2, user.getPassword());
+			int i=st.executeUpdate();
+			con.close();
+			return i;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return 0;
+		
+		
 	}
-
-	@Override
-	public boolean loginUser(User user) {
-		// TODO Auto-generated method stub
-		String email = user.getEmail();
-		String password = user.getPassword();
+	public boolean loginUser(User user)
+	{
 		try {
-	
-		ConnectionManager con = new ConnectionManager();
-		Statement st = con.getConnection().createStatement();
-		
-		ResultSet rs = st.executeQuery("SELECT * FROM USERDATA");
-		
-		while(rs.next()) {
-			if(email.equals(rs.getString("EMAIL_USER")) && password.equals(rs.getString("PASSWORD_USER"))) {
-				con.getConnection().close();
-				return true;
+			Connection con = ConnectionManager.getConnection();
+			String sql="select * from USERS";
+			PreparedStatement st = con.prepareStatement(sql);
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next())
+			{
+				if(user.getEmail().equals(rs.getString(1)) && user.getPassword().equals(rs.getString(2)))
+				{
+					return true;
+				}
 			}
-
-		}
+	
+			
+			
+		
+			
 		}
 		catch (Exception e) {
-			System.out.println(e);
-		}
-		return false;
-	}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		
+		
+	}
+		return false;
 	
+	}
 }

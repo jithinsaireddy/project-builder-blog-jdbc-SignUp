@@ -1,12 +1,12 @@
 package model;
-
-import java.time.LocalDate;
-
 public class User{
 	private String email;
-	private String password;
-	private LocalDate date;
-	
+	private String password	;	
+	public User(String email, String password) {
+		super();
+		this.email = email;
+		this.password = password;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -18,12 +18,6 @@ public class User{
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public LocalDate getDate() {
-		return date;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
 	}
 	
 	
